@@ -76,7 +76,7 @@
         </div>
         
         <div class="section">
-            <p>Buenos días, le saluda <span class="dynamic-text" id="saludoAsesor">[NOMBRE ASESOR]</span>, hoy seré el encargado de su atención. ¿Con quién tengo el gusto?</p>
+            <p id="saludo"></p>
         </div>
 
         <div class="section">
@@ -92,7 +92,6 @@
             <input type="radio" name="titular" value="no"> No
         </div>
 
-
         <div class="section">
             <H1><label>ABRIR MATRIZ Y SEGUIR PROCEDIMIENTO CORRECTAMENTE</label></H1>
         </div>
@@ -107,14 +106,11 @@
             <a href="https://frankpy18.github.io/plantillagenerica/" target="_blank">Utilizar plantilla</a>
         </div>
 
-
         <div class="section">
             <label>Promociones disponibles:</label>
             <a href="http://intranetsiacunico/Links/Redirect/BritgeRedirect?secuencia=DA11B9B579CA5FE3697236ADB4AD191C" target="_blank">Buscar promociones</a>
         </div>
 
-
-        
         <div class="section">
             <label>Pregunta de claridad final:</label>
             <p>¿La información que le brindé fue clara?<br>
@@ -150,6 +146,22 @@
             return '';
         }
 
+        // Función para obtener el saludo adecuado basado en la hora
+        function obtenerSaludo() {
+            const horaActual = new Date().getHours();
+            let saludo = "Buenos días";
+
+            if (horaActual >= 12 && horaActual < 19) {
+                saludo = "Buenas tardes";
+            } else if (horaActual >= 19) {
+                saludo = "Buenas noches";
+            }
+
+            // Aquí se agrega el saludo y el nombre del asesor dinámicamente
+            const asesorNombre = getCookie('asesorNombre') || "[NOMBRE ASESOR]"; // Obtiene el nombre del asesor desde la cookie si está guardado
+            document.getElementById('saludo').innerHTML = `${saludo}, le saluda <span class="dynamic-text" id="saludoAsesor">${asesorNombre}</span>, hoy seré el encargado de su atención. ¿Con quién tengo el gusto?`;
+        }
+
         function guardarDatos() {
             const asesorNombre = document.getElementById('asesorNombre').value || "[NOMBRE ASESOR]";
             const clienteNombre = document.getElementById('clienteNombre').value || "[NOMBRE CLIENTE]";
@@ -175,6 +187,8 @@
 
         // Cargar el nombre del asesor y cliente desde las cookies al cargar la página
         window.onload = function() {
+            obtenerSaludo();  // Llama a la función para obtener el saludo basado en la hora
+            
             const asesorNombreGuardado = getCookie('asesorNombre');
             const clienteNombreGuardado = getCookie('clienteNombre');
 
